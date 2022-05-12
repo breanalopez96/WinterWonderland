@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://use.typekit.net/fuh5mkx.css">
+
+
+<meta charset="utf-8">
+<title>Click and Drop</title>
+<style>
+
+h1 {
+    text-align: center;
+    font-family: brandon-grotesque, sans-serif;
+    font-weight: lighter;
+    font-style: normal;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+canvas {
+  border: 2px solid black;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background-image: url("WinterWonderland-01.png");
+  background-size: cover;
+}
+
+
+h2 {
+    text-align: center;
+    font-family: brandon-grotesque, sans-serif;
+    font-weight: 100;
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+#word{
+  margin-top: 20px;
+  text-align: center;
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+#winter{
+  margin-top: 40px;
+  text-align: center;
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 100;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.intro{
+  font-weight: 600;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+</style>
+<script>
+var canvas;
+var context;
+var x;
+var y;
+var circles = []
+
+function init() {
+    canvas = document.getElementById('myCanvas');
+    context = canvas.getContext('2d');
+    context.fillStyle = 'blue';
+    context.fillRect(0,0,canvas.width,canvas.height);
+    canvas.addEventListener('mousedown', click, false);
+    requestAnimationFrame(draw);
+}
+
+function ranColor() {
+    return 'rgb('+Math.floor((Math.random() * 255) + 1)+','+Math.floor((Math.random() * 255) + 1)+','+Math.floor((Math.random() * 255) + 1)+')';
+}
+function click(evt) {
+    var rect = canvas.getBoundingClientRect();
+    x = evt.clientX - rect.left;
+    y = evt.clientY - rect.top;
+    c1 = ranColor();
+    c2 = ranColor();
+    // Make a new circle each time the user clicks
+    circle = {
+        x: x,
+        y: y,
+        c1: c1,
+        c2: c2
+    }
+    circles.push(circle);
+
+}
+/*
+    This draw function uses a for loop to draw each circle in the
+    array, move it down, and remove it when it reaches the bottom
+    of the canvas.
+*/
+
+
+function draw() {
+    //context.fillStyle = 'blue';
+    //context.fillRect(0,0,canvas.width,canvas.height);
+    context.clearRect(0,0,canvas.width,canvas.height);
+
+    for(i=0; i<circles.length; i++) {
+        //console.log(circles[i]);
+        circles[i].y ++;
+
+        gradientCircle(circles[i].x,circles[i].y,25,circles[i].c1,circles[i].c2,2,'black');
+        if(circles[i].y > canvas.height+25) {
+            console.log(circles[i].y);
+            // the variable i is also the index of the element you want to splice
+            circles.splice(i, 1);
+        }
+    }
+
+    requestAnimationFrame(draw);
+}
+
+window.onload = init;
+
+
+</script>
+</head>
+
+<body>
+<h1>Walking in a...</h1>
+
+<canvas id="myCanvas" width="900" height="500">
+</canvas>
+<h2> Click within the canvas to make it snow </h2>
+
+<div id="winter"> <p class="intro"> Winter is the best season: </p> </div>
+
+
+</body>
+<script src="js/gradientCircle.js"></script>
+</html>
